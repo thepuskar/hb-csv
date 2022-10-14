@@ -1,14 +1,14 @@
-import { Header } from 'components/Header';
-import { Button } from 'components/Button';
-import { ReactComponent as Logo } from 'assets/favicon.svg';
+import { SearchBar } from 'components';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from 'config';
 
 function App() {
   return (
-    <div className="App">
-      <Header title="hola" />
-      <Logo height={100} width={100} />
-      <Button onClick={() => alert('hola')}>Heyo</Button>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div className="App px-3 md:px-16  py-3">
+        <SearchBar />
+      </div>
+    </QueryClientProvider>
   );
 }
 

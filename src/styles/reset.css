@@ -36,3 +36,24 @@ table {
 textarea {
   white-space: revert;
 }
+
+
+.scrollbar::-webkit-scrollbar {
+    width: 0.6em;
+    height: 0.6em;
+  }
+
+.scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: #f7f4ed;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background: #e0cbcb;
+    border-radius: 100vh;
+    border: 2px solid #f6f7ed;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #c0a0b9;
+}
