@@ -1,33 +1,56 @@
 import { useState, useRef } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { useOnClickOutside } from 'usehooks-ts';
+
 import { useFetch } from 'hooks';
 
 import { SearchIcon, ChevronDown } from 'assets';
 
 interface ICategory {
-  id: string;
-  name: string;
-  image: string;
-  count: number;
-  isHBSelect: boolean;
-  parentCategory: string;
-  categories: ICategory[];
+  id?: string;
+  name?: string;
+  image?: string;
+  count?: number;
+  isHBSelect?: boolean;
+  parentCategory?: string;
+  categories?: ICategory[];
+}
+
+interface ISearchQuery {
+  searchValue: string;
 }
 
 export function SearchBar() {
   const ref = useRef(null);
   const [showDropDown, setShowDropDown] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<ICategory>();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ISearchQuery>();
 
   const { data, isLoading } = useFetch('GET_ALL_CATEGORY', '/api/AppData/GetAllCategory');
-  console.log('data', data);
+
   useOnClickOutside(ref, () => {
     setShowDropDown(false);
   });
 
+  const onSubmitQuery: SubmitHandler<ISearchQuery> = (data) => {
+    console.log(data);
+  };
+
+  const selectCategoryHandler = (category?: ICategory) => {
+    if (category) setSelectedCategory(category);
+    if (!category) setSelectedCategory({});
+    setShowDropDown(false);
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSubmit(onSubmitQuery)}>
       <div className="flex w-full">
-        <div className="relative w-44" ref={ref}>
+        <div className="relative min-w-fit" ref={ref}>
           <label
             htmlFor="search-dropdown"
             className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300"
@@ -40,7 +63,8 @@ export function SearchBar() {
             className="w-full flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200  dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white dark:border-gray-600"
             type="button"
           >
-            All categories <ChevronDown className="ml-1 w-4 h-4" />
+            {selectedCategory && selectedCategory?.name ? selectedCategory?.name : 'All categories'}{' '}
+            <ChevronDown className="ml-1 w-4 h-4" />
           </button>
           {showDropDown && (
             <div
@@ -59,6 +83,7 @@ export function SearchBar() {
                 >
                   <li>
                     <button
+                      onClick={() => selectCategoryHandler()}
                       type="button"
                       className="inline-flex py-2 px-4 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                     >
@@ -68,6 +93,7 @@ export function SearchBar() {
                   {data?.data?.data?.map((category: ICategory) => (
                     <li key={category?.id}>
                       <button
+                        onClick={() => selectCategoryHandler(category)}
                         type="button"
                         className="inline-flex py-2 px-4 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
@@ -86,6 +112,8 @@ export function SearchBar() {
             id="search-dropdown"
             className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300  dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
             placeholder="Search for anythings..."
+            autoComplete="off"
+            {...register('searchValue', { required: selectedCategory ? false : true })}
           />
           <button
             type="submit"
