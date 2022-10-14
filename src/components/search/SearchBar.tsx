@@ -1,52 +1,70 @@
-import { useState, useRef } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { useOnClickOutside } from 'usehooks-ts';
+import { useState, useRef, useEffect } from 'react'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { useOnClickOutside, useDebounce } from 'usehooks-ts'
 
-import { useFetch } from 'hooks';
-
-import { SearchIcon, ChevronDown } from 'assets';
+import { useFetch } from 'hooks'
+import { SearchSuggestion } from 'components'
+import { SearchIcon, ChevronDown } from 'assets'
 
 interface ICategory {
-  id?: string;
-  name?: string;
-  image?: string;
-  count?: number;
-  isHBSelect?: boolean;
-  parentCategory?: string;
-  categories?: ICategory[];
+  id?: string
+  name?: string
+  image?: string
+  count?: number
+  isHBSelect?: boolean
+  parentCategory?: string
+  categories?: ICategory[]
 }
 
-interface ISearchQuery {
-  searchValue: string;
+export interface ISearchQuery {
+  searchValue: string
 }
 
 export function SearchBar() {
-  const ref = useRef(null);
-  const [showDropDown, setShowDropDown] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<ICategory>();
+  const ref = useRef(null)
+  const suggestionRef = useRef(null)
+  const [showDropDown, setShowDropDown] = useState(false)
+  const [showSuggestion, setShowSuggestion] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState<ICategory>()
 
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors },
-  } = useForm<ISearchQuery>();
+  } = useForm<ISearchQuery>()
 
-  const { data, isLoading } = useFetch('GET_ALL_CATEGORY', '/api/AppData/GetAllCategory');
+  const debouncedValue = useDebounce<string>(watch()?.searchValue, 300)
+
+  const { data, isLoading } = useFetch('GET_ALL_CATEGORY', '/api/AppData/GetAllCategory', true)
 
   useOnClickOutside(ref, () => {
-    setShowDropDown(false);
-  });
+    setShowDropDown(false)
+  })
+
+  useOnClickOutside(suggestionRef, () => {
+    setShowSuggestion(false)
+  })
 
   const onSubmitQuery: SubmitHandler<ISearchQuery> = (data) => {
-    console.log(data);
-  };
+    console.log(data)
+    setShowSuggestion(false)
+  }
 
   const selectCategoryHandler = (category?: ICategory) => {
-    if (category) setSelectedCategory(category);
-    if (!category) setSelectedCategory({});
-    setShowDropDown(false);
-  };
+    if (category) setSelectedCategory(category)
+    if (!category) setSelectedCategory({})
+    setShowDropDown(false)
+  }
 
+  useEffect(() => {
+    if (debouncedValue?.length > 3 && showSuggestion) return setShowSuggestion(true)
+
+    return () => {
+      setShowSuggestion(false)
+    }
+  }, [debouncedValue])
   return (
     <form onSubmit={handleSubmit(onSubmitQuery)}>
       <div className="flex w-full">
@@ -67,15 +85,7 @@ export function SearchBar() {
             <ChevronDown className="ml-1 w-4 h-4" />
           </button>
           {showDropDown && (
-            <div
-              className="scrollbar z-10 w-60 h-96 overflow-y-auto bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700"
-              style={{
-                position: 'absolute',
-                inset: '0px auto auto 0px',
-                margin: '0px',
-                transform: 'translate(0px, 44px)',
-              }}
-            >
+            <div className="floatbox scrollbar z-10 w-60 h-96 overflow-y-auto bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
               {!isLoading && (
                 <ul
                   className="py-1 text-sm text-gray-700 dark:text-gray-200"
@@ -106,24 +116,33 @@ export function SearchBar() {
             </div>
           )}
         </div>
-        <div className="relative w-full">
+        <div className="relative w-full" ref={suggestionRef}>
           <input
             type="search"
             id="search-dropdown"
             className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300  dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
             placeholder="Search for anythings..."
             autoComplete="off"
+            onFocus={() => setShowSuggestion(true)}
             {...register('searchValue', { required: selectedCategory ? false : true })}
           />
           <button
-            type="submit"
+            onClick={() => handleSubmit(onSubmitQuery)}
             className="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800  dark:bg-blue-600 dark:hover:bg-blue-700"
           >
             <SearchIcon className="w-5 h-5" />
             <span className="sr-only">Search</span>
           </button>
+          {showSuggestion && debouncedValue?.length > 3 && (
+            <SearchSuggestion
+              searchText={debouncedValue}
+              setValue={setValue}
+              handleSubmit={handleSubmit}
+              onSubmitQuery={onSubmitQuery}
+            />
+          )}
         </div>
       </div>
     </form>
-  );
+  )
 }
