@@ -1,10 +1,7 @@
 import { generateRandNumArray } from 'utils';
+import { ISkeletonProps } from 'interface'
 
-interface IProps {
-  count: number;
-}
-
-export const ListSkeleton = ({ count = 4 }: IProps) => {
+export const ListSkeleton = ({ count = 4 }: ISkeletonProps) => {
   return (
     <div className="py-2 px-4">
       {generateRandNumArray(count)?.map((count) => (
@@ -14,5 +11,5 @@ export const ListSkeleton = ({ count = 4 }: IProps) => {
         ></p>
       ))}
     </div>
-  );
-};
+  )
+}
