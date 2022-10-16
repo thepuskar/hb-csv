@@ -66,7 +66,7 @@ export function SearchBar() {
     }
   }, [debouncedValue])
   return (
-    <form onSubmit={handleSubmit(onSubmitQuery)}>
+    <form className="w-full" onSubmit={handleSubmit(onSubmitQuery)}>
       <div className="flex w-full">
         <div className="relative min-w-fit" ref={ref}>
           <label
