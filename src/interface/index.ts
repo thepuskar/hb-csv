@@ -56,14 +56,37 @@ export interface IProduct {
       value: string
     }
   ]
-  productMedia: [
-    {
-      id: string
-      mediaType: number
-      locationKey: string
-      mediaExt: string
-      oldLocationKey: boolean
-      mediaSize: number
-    }
-  ]
+  productMedia: IProductMedia[]
+}
+
+export interface IProductMedia {
+  id: string
+  mediaType: number | null | undefined
+  locationKey: string
+  mediaExt: string | null | undefined
+  oldLocationKey: boolean
+  mediaSize: number | null | undefined
+}
+
+export interface ITableInfo {
+  id: string
+  label: string
+  value: string
+}
+
+export interface IProductAttributeValues {
+  attributeId: string
+  attributeName: string
+  value: string
+}
+
+export interface ICreatorInfo {
+  createdByName: string
+  creatorImg: string
+  createdBy: string
+  createdById: string
+  creatorAdCount: number
+  averageRate: number
+  hidePhoneNumber: boolean
+  totalRating: number
 }
