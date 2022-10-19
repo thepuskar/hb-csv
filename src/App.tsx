@@ -1,7 +1,7 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 // import { CSVLink, CSVDownload } from 'react-csv'
 import { queryClient } from 'config'
-import { ProductList, Layout } from 'components'
+import { ProductList, Layout, ProductDetail } from 'components'
 
 function App() {
   // const headers = [
@@ -20,7 +20,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <div className="App px-3 md:px-16  py-3">
         <Layout>
-          <ProductList />
+          <ProductDetail />
         </Layout>
         {/* <CSVLink data={data} headers={headers}>
           Download me
