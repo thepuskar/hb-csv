@@ -8,6 +8,7 @@ import { MdLocationOn } from 'react-icons/md'
 
 interface IProps {
   data: IProduct[]
+  setProductId: (id: string) => void
 }
 
 export const ProductCard = (props: IProps) => {
@@ -18,7 +19,10 @@ export const ProductCard = (props: IProps) => {
           key={data?.id}
           className="w-full sm:w-1/2 md:w-1/2 xl:w-1/3 p-4 h-full flex cursor-pointer "
         >
-          <div className="c-card border-2 border-white bg-white shadow-md hover:shadow-xl rounded-lg overflow-hidden flex flex-col w-full h-full">
+          <div
+            onClick={() => props?.setProductId(data?.id)}
+            className="c-card border-2 border-white bg-white shadow-md hover:shadow-xl rounded-lg overflow-hidden flex flex-col w-full h-full"
+          >
             <div className="relative pb-48 overflow-hidden border-none">
               {data?.isHBSelect && (
                 <span className="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-1 rounded-lg z-10 bg-green-500 text-sm font-medium text-white select-none">
