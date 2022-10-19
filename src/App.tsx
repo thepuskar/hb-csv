@@ -18,9 +18,9 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="App px-3 md:px-16  py-3">
+      <div className="App px-3  py-3">
         <Layout>
-          <ProductDetail />
+          <ProductList />
         </Layout>
         {/* <CSVLink data={data} headers={headers}>
           Download me

@@ -25,7 +25,7 @@ export const generalData = (data: any) => [
   {
     id: '5',
     label: 'Ads Expiry',
-    value: data?.expiryDate.slice(0, 10),
+    value: data?.expiryDate?.slice(0, 10),
   },
   {
     id: '6',

@@ -1,5 +1,6 @@
 import { convertImageType } from 'utils'
 import { Star } from 'assets'
+import { NO_IMAGE } from 'constants'
 import { ICreatorInfo } from 'interface'
 
 interface IProps {
@@ -8,11 +9,15 @@ interface IProps {
 
 export const UserInfo = (props: IProps) => {
   return (
-    <div className="flex sticky bottom-0 items-center py-3 mt-3 border-t-2">
+    <div className="flex items-center py-3 mt-3 border-t-2">
       <img
         className="w-10 h-10 object-cover rounded-full"
         alt="User avatar"
-        src={convertImageType(props?.userInfo?.creatorImg, 100, 100)}
+        src={convertImageType(props?.userInfo?.creatorImg || NO_IMAGE, 100, 100)}
+        onError={({ currentTarget }) => {
+          currentTarget.onerror = null
+          currentTarget.src = convertImageType(NO_IMAGE)
+        }}
       />
 
       <div className="pl-3">
