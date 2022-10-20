@@ -18,14 +18,14 @@ export const ProductList = () => {
   return (
     <div className="mt-12 text-gray-900 font-sans p-6 w-full">
       <div className="w-full flex justify-between items-start relative">
-        <div className="flex flex-wrap w-2/3 -mx-2 bg-gray-200 rounded shadow-lg">
+        <div className="flex sticky top-[4.5em] flex-wrap w-2/3 -mx-2 bg-gray-200 rounded shadow-lg">
           {isLoading ? (
             <ProductCardSkeleton count={9} />
           ) : (
             <ProductCard setProductId={setProductId} data={data?.data?.data} />
           )}
         </div>
-        <div className="w-1/3 h-[90vh] sticky top-20 right-0 p-4 flex justify-center bg-gray-200 rounded shadow-lg">
+        <div className="w-1/3 h-[90vh] sticky top-[4.5em] right-0 p-4 flex justify-center bg-gray-200 rounded shadow-lg">
           <ProductDetail id={productId} />
         </div>
       </div>
