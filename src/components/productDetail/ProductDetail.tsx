@@ -32,15 +32,19 @@ export const ProductDetail = (props: IProps) => {
           <div className="bg-white w-full p-4">
             <p className="text-gray-900 text-xl font-medium">{data?.data?.data?.name}</p>
             <p className="text-gray-600 font-normal text-md flex flex-col">
-              <span className={`${readMore ? '' : 'line-clamp-4'}`}>
-                {data?.data?.data?.description}
+              <span>
+                {data?.data?.data?.description?.length > 200
+                  ? data?.data?.data?.description?.slice(0, readMore ? -1 : 200) + ' ...'
+                  : data?.data?.data?.description}
               </span>
-              <button
-                className="inline-flex text-indigo-500"
-                onClick={() => setReadMore((curr) => !curr)}
-              >
-                {readMore ? ' Show less' : ' Read More'}
-              </button>
+              {data?.data?.data?.description?.length > 200 && (
+                <button
+                  className="inline-flex text-indigo-500"
+                  onClick={() => setReadMore((curr) => !curr)}
+                >
+                  {readMore ? ' Show less' : ' Read More'}
+                </button>
+              )}
             </p>
             <div className="flex justify-between align-center flex-wrap py-3">
               <div className="flex flex-wrap justify-starts items-center  text-xs text-white font-medium">
