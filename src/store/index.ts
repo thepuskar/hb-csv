@@ -1,4 +1,6 @@
 import create from 'zustand'
+import { dataExists } from 'utils'
+
 import { IProduct } from 'interface'
 
 interface TodoState {
@@ -10,7 +12,11 @@ export const useStore = create<TodoState>((set) => ({
   products: [],
   addProduct: (data: IProduct) => {
     set((state) => ({
-      products: [...state.products, data],
+      products: dataExists(state?.products, data?.id)
+        ? state?.products
+        : [...state?.products, data],
     }))
   },
 }))
+
+
