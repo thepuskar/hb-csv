@@ -4,6 +4,7 @@ export interface ISkeletonProps {
 
 
 export interface IProduct {
+  products: any
   id: string
   name: string
   description: string
