@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { isEmpty } from 'lodash'
 
+import { useStore } from 'store'
 import { useFetch } from 'hooks'
+import { dataExists } from 'utils'
 import { generalData, newProductAttributeValues } from './tableValue'
 import { Table, Slider, UserInfo, ProductDetailSkeleton } from 'components'
 
@@ -19,16 +21,17 @@ export const ProductDetail = (props: IProps) => {
     props?.id
   )
 
+  const { addProduct, products } = useStore()
+
+  console.log('products', products)
+
   return (
     <div className="shadow-lg scrollbar overflow-scroll border-solid transition duration-500 ease-in-out transform hover:shadow-2xl rounded-lg h-90 w-full cursor-pointer">
       {isLoading ? (
         <ProductDetailSkeleton />
       ) : (
         <div className="w-full block h-full ">
-          <Slider
-            productMedia={data?.data?.data?.productMedia}
-            isHBSelect={data?.data?.data?.isHBSelect}
-          />
+          <Slider data={data?.data?.data} />
           <div className="bg-white w-full p-4">
             <p className="text-gray-900 text-xl font-medium">{data?.data?.data?.name}</p>
             <p className="text-gray-600 font-normal text-md flex flex-col">
@@ -71,9 +74,14 @@ export const ProductDetail = (props: IProps) => {
               <Table data={newProductAttributeValues(data?.data?.data)} title="Specifications" />
             )}
             <UserInfo userInfo={data?.data?.data?.creatorInfo} />
-            <button className="bg-indigo-500 hover:bg-indigo-700 mt-3 transition duration-500 ease-in-out text-white w-full rounded-lg p-2 text-base font-medium text-center">
-              Add to Excel
-            </button>
+            {!dataExists(products, data?.data?.data?.id) && (
+              <button
+                onClick={() => addProduct(data?.data?.data)}
+                className="bg-indigo-500 hover:bg-indigo-700 mt-3 transition duration-500 ease-in-out text-white w-full rounded-lg p-2 text-base font-medium text-center"
+              >
+                Add to Excel
+              </button>
+            )}
           </div>
         </div>
       )}
