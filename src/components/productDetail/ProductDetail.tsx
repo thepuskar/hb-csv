@@ -23,7 +23,6 @@ export const ProductDetail = (props: IProps) => {
 
   const { addProduct, products } = useStore()
 
-  console.log('products', products)
 
   return (
     <div className="shadow-lg scrollbar overflow-scroll border-solid transition duration-500 ease-in-out transform hover:shadow-2xl rounded-lg h-90 w-full cursor-pointer">
