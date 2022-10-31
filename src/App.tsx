@@ -1,6 +1,6 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from 'config'
-import { ProductList, Layout, ProductDetail } from 'components'
+import { ProductList, Layout } from 'components'
 
 function App() {
   return (

@@ -92,3 +92,10 @@ export interface ICreatorInfo {
   hidePhoneNumber: boolean
   totalRating: number
 }
+
+export interface CsvDownloadProps {
+  data: any[]
+  filename?: string
+  delimiter?: string
+  headers?: string[]
+}
