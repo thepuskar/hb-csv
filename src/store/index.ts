@@ -1,7 +1,7 @@
 import create from 'zustand'
 import { dataExists } from 'utils'
 
-import { IProduct } from 'interface'
+import { IProduct, ISearchParam } from 'interface'
 
 interface ProductState {
   products: IProduct[]
@@ -19,4 +19,30 @@ export const useStore = create<ProductState>((set) => ({
   },
 }))
 
+export const useSearchStore = create<any>(
+  (
+    set: (
+      arg0: (state: { searchParams: ISearchParam }) => {
+        searchParam: {
+          isSearchApplied: boolean
+          longitude: number
+          latitude: number
+          category?: string | undefined
+          searchValue: string
+        }
+      }
+    ) => any
+  ) => ({
+    searchParam: {
+      isSearchApplied: false,
+      longitude: 0,
+      latitude: 0,
+      searchValue: '',
+    },
+    addSearchParam: (data: ISearchParam) =>
+      set((state: { searchParams: ISearchParam }) => ({
+        searchParam: { ...state?.searchParams, ...data },
+      })),
+  })
+)
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
+import { useSearchStore } from 'store'
 import { getApi } from 'utils'
 import { IProduct } from 'interface'
 

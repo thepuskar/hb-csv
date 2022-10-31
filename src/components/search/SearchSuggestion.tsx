@@ -29,7 +29,6 @@ export const SearchSuggestion = ({
     !!searchText,
     searchText
   )
-  console.log('data?.data?.data?.results?.length > 0', data?.data?.data?.results)
   return (
     <>
       {isLoading ? (

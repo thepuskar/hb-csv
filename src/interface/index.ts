@@ -99,3 +99,11 @@ export interface CsvDownloadProps {
   delimiter?: string
   headers?: string[]
 }
+
+export interface ISearchParam {
+  isSearchApplied: boolean
+  longitude: number
+  latitude: number
+  category?: string
+  searchValue: string
+}

@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { useOnClickOutside, useDebounce } from 'usehooks-ts'
 
+import { useSearchStore } from 'store'
 import { useFetch } from 'hooks'
 import { SearchSuggestion } from 'components'
 import { SearchIcon, ChevronDown } from 'assets'
@@ -27,6 +28,8 @@ export function SearchBar() {
   const [showSuggestion, setShowSuggestion] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<ICategory>()
 
+  const { searchParam, addSearchParam } = useSearchStore()
+
   const {
     register,
     handleSubmit,
@@ -48,7 +51,12 @@ export function SearchBar() {
   })
 
   const onSubmitQuery: SubmitHandler<ISearchQuery> = (data) => {
-    console.log(data)
+    addSearchParam({
+      ...searchParam,
+      searchValue: data?.searchValue,
+      isSearchApplied: true,
+      category: selectedCategory?.id || '',
+    })
     setShowSuggestion(false)
   }
 
@@ -66,7 +74,10 @@ export function SearchBar() {
     }
   }, [debouncedValue])
   return (
-    <form className="w-full" onSubmit={handleSubmit(onSubmitQuery)}>
+    <form
+      className="w-full border-solid border-color-red-500 "
+      onSubmit={handleSubmit(onSubmitQuery)}
+    >
       <div className="flex w-full">
         <div className="relative min-w-fit" ref={ref}>
           <label
@@ -128,7 +139,7 @@ export function SearchBar() {
           />
           <button
             onClick={() => handleSubmit(onSubmitQuery)}
-            className="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800  dark:bg-blue-600 dark:hover:bg-blue-700"
+            className="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-indigo-500 rounded-r-lg border border-blue-700 hover:bg-blue-800  dark:bg-blue-600 dark:hover:bg-blue-700"
           >
             <SearchIcon className="w-5 h-5" />
             <span className="sr-only">Search</span>
