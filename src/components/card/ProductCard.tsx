@@ -11,14 +11,14 @@ interface IProps {
 }
 
 export const ProductCard = (props: IProps) => {
-  const { addProduct, products } = useStore()
+  const { addProduct } = useStore()
 
   return (
     <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 w-full">
-      {props?.data?.map((data: IProduct) => (
+      {props?.data?.map((data: IProduct, i) => (
         <div
           className="relative mx-auto w-full cursor-pointer"
-          key={data?.id}
+          key={data?.id + i}
           onClick={() => props?.setProductId(data?.id)}
         >
           <div className="relative inline-block duration-300 ease-in-out transition-transform transform w-full">
@@ -40,7 +40,7 @@ export const ProductCard = (props: IProps) => {
                 </div>
 
                 {data?.isHBSelect ? (
-                  <span className="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-2 rounded-lg z-10 bg-green-500 text-sm font-medium text-white select-none">
+                  <span className="absolute top-0 left-0 inline-flex mt-2 ml-2 px-3 py-1 rounded-lg z-10 bg-green-500 text-sm font-medium text-white select-none">
                     HB Select
                   </span>
                 ) : null}

@@ -107,3 +107,12 @@ export interface ISearchParam {
   category?: string
   searchValue: string
 }
+
+export interface ISearchProducyPayload {
+  longitude?: number
+  latitude?: number
+  category?: string
+  searchValue: string
+  pageNumber?: number
+  pageSize?: number
+}

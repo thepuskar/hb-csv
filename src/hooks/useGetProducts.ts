@@ -2,37 +2,53 @@ import { useState, useEffect } from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
 import { useSearchStore } from 'store'
-import { getApi } from 'utils'
+import { getApi, postApi, searchProductPayload } from 'utils'
 import { IProduct } from 'interface'
 
 export const useGetInfiniteProducts = () => {
   const [products, setProducts] = useState<IProduct[]>()
+  const [payload, setPayload] = useState<any>()
+  const { searchParam } = useSearchStore()
+
   const fetchProducts = async ({ pageParam = 1 }) => {
-    return await getApi(
-      `/api/Product?PageSize=6&CategoryId=eb9c8147-07c0-4951-a962-381cdb400e37&IsHBSelect=false&PageNumber=${pageParam}`
-    )
+    return await getApi(`/api/Product?PageSize=6&PageNumber=${pageParam}`)
   }
+
+  useEffect(() => {
+    if (searchParam?.isSearchApplied) {
+      const pack = searchProductPayload(searchParam)
+      setPayload(pack)
+    }
+  }, [searchParam])
+
   // const postSearchQuery = async ({ pageParam = 1 }) => { }
-  const {
-    data,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isLoading,
-    isFetching,
-    isFetchingNextPage,
-    status,
-  } = useInfiniteQuery(['projects'], fetchProducts, {
-    getNextPageParam: (lastPage: any, pages: any) => {
-      const totalRecords = pages[0]?.meta?.totalPages || pages[0]?.totalPages
-      if (lastPage?.meta) {
-        if (pages?.length === totalRecords) return undefined
-        return pages?.length + 1
+  const postData = async ({ pageParam = 1 }) => {
+    const parsePayload = JSON.parse(payload)
+    const jdata = JSON.stringify({
+      ...parsePayload,
+      pageNumber: pageParam,
+    })
+
+    const res = await postApi('/api/Search/Products', jdata)
+    return res
+  }
+
+  const { data, fetchNextPage, hasNextPage, isLoading, isFetching, isFetchingNextPage } =
+    useInfiniteQuery(
+      [searchParam?.isSearchApplied ? 'products' : payload, payload],
+      searchParam?.isSearchApplied ? postData : fetchProducts,
+      {
+        getNextPageParam: (lastPage: any, pages: any) => {
+          const totalRecords = pages[0]?.meta?.totalPages || pages[0]?.totalPages
+          if (lastPage?.meta) {
+            if (pages?.length === totalRecords) return undefined
+            return pages?.length + 1
+          }
+          if (pages?.length === totalRecords) return undefined
+          return pages?.length + 1
+        },
       }
-      if (pages?.length === totalRecords) return undefined
-      return pages?.length + 1
-    },
-  })
+    )
 
   useEffect(() => {
     if (!isFetching) {

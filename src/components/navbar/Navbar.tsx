@@ -1,17 +1,14 @@
 import { SearchBar, DownloadSheet } from 'components'
+import { Logo } from 'assets'
 
 export const Navbar = () => {
   return (
     <nav className="bg-white px-2 sm:px-4 py-2.5 dark:bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600">
       <div className="container flex flex-wrap justify-between items-center mx-auto">
-        <a href="/" className="flex items-center">
-          <img
-            src="https://cdn02.hamrobazaar.com/Assets/Category/hbselect.png"
-            className="mr-3 h-6 sm:h-9"
-            alt="HB Logo"
-          />
+        <a href="/" className="flex items-center cursor-pointer">
+          <Logo className="w-6 h-6 mr-2" />
           <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-            Hamrobazar
+            HamroBazar
           </span>
         </a>
         <div className="flex md:order-2">
@@ -40,7 +37,7 @@ export const Navbar = () => {
           </button>
         </div>
         <div
-          className="hidden justify-between items-center w-full md:flex md:w-1/3 md:order-1"
+          className="hidden justify-between items-center w-full md:flex md:w-2/3 md:order-1"
           id="navbar-sticky"
         >
           <SearchBar />
