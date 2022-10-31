@@ -3,9 +3,10 @@ export interface ISkeletonProps {
 }
 
 
-export interface IProduct {
+export type IProduct = {
   products: any
   id: string
+  ad_Id?: string
   name: string
   description: string
   price: number
