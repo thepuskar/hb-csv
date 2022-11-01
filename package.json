@@ -1,20 +1,19 @@
 {
-  "name": "vite-react-ts",
-  "version": "0.0.0",
-  "description": "React Typescript Starter Template with Vite",
+  "name": "hb-csv",
+  "version": "0.1.0",
+  "description": "CSV download",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/uchihamalolan/vite-react-ts.git"
+    "url": "git+https://github.com/thepuskar/hb-csv.git"
   },
   "keywords": [
     "vite",
     "react",
-    "starter",
-    "template"
+    "csv",
+    "zustand"
   ],
-  "author": "Malolan B. <uchihamalolan@gmail.com> (https://twitter.com/malolan12)",
+  "author": "Puskar Adhikari. <puskar.ad@gmail.com> (https://twitter.com/the_puskar)",
   "license": "MIT",
-  "homepage": "https://github.com/uchihamalolan/vite-react-ts",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
