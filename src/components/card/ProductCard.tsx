@@ -23,7 +23,7 @@ export const ProductCard = (props: IProps) => {
         >
           <div className="relative inline-block duration-300 ease-in-out transition-transform transform w-full">
             <div className="shadow p-4 rounded-lg bg-white">
-              <div className="flex justify-center relative rounded-lg overflow-hidden h-32">
+              <div className="flex justify-center relative rounded-lg overflow-hidden h-32 2xl:h-56">
                 <div className="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
                   <div className="absolute inset-0 bg-black">
                     {' '}
